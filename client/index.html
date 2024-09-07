@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <title>Log Watcher</title>
+  </head>
+
+  <body>
+    <h1>Log Watching from log.txt file</h1>
+    <ul id="data"></ul>
+
+    <script>
+        const ws = new WebSocket("ws://localhost:3000");
+
+        ws.onmessage = (message) => {
+          const data = JSON.parse(message.data);
+          const log = document.createElement('li');
+          const rawData = data.content;
+          // const formattedData = formatData(rawData);
+          log.textContent = rawData;
+          document.getElementById('data').appendChild(log);
+          console.log(`message received`, message.data)
+        };
+
+        ws.onopen = () => {
+            console.log('WebSocket connection opened');
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
+
+        ws.onerror = function(err) {
+          console.error("Sockets Error: ", error);
+        };
+
+        // function formatData(data) {
+        //     return data
+        //         .replace(/\u0000/g, '')   
+        //         .replace(/\r/g, '')      
+        //         .trim();          
+        // }
+    </script>
+  </body>
+</html>
